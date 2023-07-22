@@ -1,0 +1,15 @@
+.column{
+    width:30vw;
+    margin:0;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+* {
+    color: white;
+    font-family: 'Jacques Francois', serif;
+    font-size: 25px;
+}
