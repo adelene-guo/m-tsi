@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<title>Verse</title>
+<title>verse</title>
     <head>
         <link rel="stylesheet" type="text/css" href="verse_user.css">
         <link rel="preconnect" href="https://fonts.googleapis.com"> 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
         <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
     </head>
-    <body style="background-color: #151414; margin-left: 5%;">
-        <br><br>
+    <body style="background-color: #151414; margin-left: 7%; margin-right: 7%;">
+        <div style="margin-top: 3%"></div>
         <center><img src="verse_title.png" width = "40%"></center>
-        <p id="number"></p>
+        
+        <div style="margin-top: 3%"></div>
+        <b><span style="display: inline; color:#CC5500; font-size: 50px;" id="number"></span></b>
+        <p style="display: inline;"> contributers</p>
+        
+        <div style="margin-top: 3%"></div>
+        <div style="float: left;">currently playing...</div>
+        
+        <div style="float: right;" >
+            mixing
+            <label class="switch" id="mixingOn" onclick="mixingOn()">
+            <input type="checkbox">
+            <span class="slider round"></span></label>
+            </div>
+        </label>
+        
+        <div style="margin-top: 15%"></div>
+        <center><img src="SongCoverExample.jpeg" alt="Song Cover" width = "40%"></center>
+        
+        <div style="margin-top: 3%"></div>
+        <h1 style="text-align: center;" id = "songName"></h1> <!--code this part-->
+
+
         <script src="verse_user.js"></script>
     </body>
 </html>
