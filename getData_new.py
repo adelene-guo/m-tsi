@@ -5,6 +5,7 @@ import base64
 import webbrowser
 import pandas as pd
 import os
+import spotify as sp
 
 # Get ID and secret from environment
 client_id = "0eac05c214004561ab6bd69a504e2594"
@@ -89,12 +90,27 @@ data = {
     "Artist": [track["artists"][0]["name"] for track in top_tracks],
     "Album": [track["album"]["name"] for track in top_tracks],
     "Popularity":[track["album"]["popularity"] for track in top_tracks],
+    "song_id":[track["album"]["id"] for track in top_tracks],
     "Release Date": [track["album"]["release_date"] for track in top_tracks]
 }
+
 
 # get data into df
 df = pd.DataFrame(data)
 print(df)
+
+features = {}
+all_track_ids = list(df['song_id'].unique())
+start = 0
+num_tracks = 10
+while start < len(all_track_ids):
+    tracks_batch = all_track_ids[start:start+num_tracks]
+    features_batch = sp.audio_features(tracks_batch)
+    features.update({ track_id : track_features 
+                 for track_id, track_features in zip(tracks_batch, features_batch) })
+    start += num_tracks
+
+print(features['1mqlc0vEP9mU1kZgTi6LIQ'])
 
 # df to excel
 file_name = "top_tracks.xlsx"
