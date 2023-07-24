@@ -73,3 +73,25 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+
+      #queue-container {
+          width: 100%;
+          margin: 20px auto;
+          border: 1px solid #ccc;
+          padding: 10px;
+          border-radius: 5px;
+      }
+
+      #queue-list {
+          list-style: none;
+          padding: 0;
+      }
+
+      .queue-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0;
+          border-bottom: 1px solid #ccc;
+      }

@@ -27,3 +27,40 @@ function mixingOn(){
             document.getElementById("mixingText").innerHTML = "mixing off";
     }
    }
+
+   let queue = [];
+
+   function addToQueue() {
+       const inputField = document.getElementById("song-input");
+       const songName = inputField.value.trim();
+
+       if (songName !== "") {
+           queue.push(songName);
+           inputField.value = "";
+           renderQueue();
+       }
+   }
+
+   function removeFromQueue(index) {
+       queue.splice(index, 1);
+       renderQueue();
+   }
+
+   function renderQueue() {
+       const queueList = document.getElementById("queue-list");
+       queueList.innerHTML = "";
+
+       queue.forEach((song, index) => {
+           const listItem = document.createElement("li");
+           listItem.className = "queue-item";
+           listItem.innerHTML = `
+               <span>${song}</span>
+               <button style="color:black;" onclick="removeFromQueue(${index})">Remove</button>
+           `;
+           queueList.appendChild(listItem);
+       });
+   }
+   function clearQueue() {
+    queue = [];
+    renderQueue();
+}

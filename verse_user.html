@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
         <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
     </head>
-    <body style="background-color: #151414; margin-left: 7%; margin-right: 7%;">
+    <body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
         <div style="margin-top: 3%"></div>
         <center><img src="verse_title.png" width = "40%"></center>
         
@@ -32,6 +32,13 @@
         <div style="margin-top: 3%"></div>
         <h1 style="text-align: center;" id = "songName"></h1> <!--code this part-->
 
+    <div id="queue-container">
+        <h2>music queue</h2>
+        <ul id="queue-list"></ul>
+        <input type="text" id="song-input" style ="color: #151414;" placeholder="Enter a song...">
+        <button style="color:#151414; width: 35%;" onclick="addToQueue()">add song</button>
+    </div>
+    <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">leave party</button></center>
 
         <script src="verse_user.js"></script>
     </body>
