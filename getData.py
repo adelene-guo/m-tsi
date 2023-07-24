@@ -5,6 +5,8 @@ import base64
 import webbrowser
 import pandas as pd
 import os
+from flask import Flask
+from flask import request
 
 # Get ID and secret from environment
 client_id = "0eac05c214004561ab6bd69a504e2594"
@@ -14,6 +16,9 @@ client_secret = "008c275d524146d68a9ec0cd04540dfc"
 REDIRECT_URI = "http://localhost:8000/callback"  # replace with your callback URL
 AUTH_URL = 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
+
+redirect_app = Flask(__name__)
+
 
 #params for request
 params = {
@@ -28,15 +33,7 @@ SPOTIFY_GET_TOP_TRACKS_URL = "https://api.spotify.com/v1/me/top/tracks"
 
 # get data
 def get_top_tracks(ACCESS_TOKEN, limit=10, time_range='medium_term'):
-    """
-    Get a user's top tracks.
 
-    Parameters:
-    - limit: The number of entities to return. Range: 1-50. Default: 10.
-    - time_range: Over what time frame the affinities are computed.
-                  Valid values: 'long_term' (several years), 'medium_term' (last 6 months),
-                  'short_term' (last 4 weeks). Default: 'medium_term'
-    """
 
     headers = {
         "Authorization": f"Bearer {ACCESS_TOKEN}"
@@ -74,32 +71,11 @@ def get_access_token(auth_code):
 
 
 
+
 # authorize on web
 webbrowser.open(requests.Request('GET', AUTH_URL, params=params).prepare().url)
 
-# enter in auth code from web, get token, get user id
-auth_code = input("Paste the authorization code here: ")
-token = get_access_token(auth_code)
-user_id = input("Enter your Spotify username (user_id): ")
 
-# Example usage:
-top_tracks = get_top_tracks(token)
-data = {
-    "Track Name": [track["name"] for track in top_tracks],
-    "Artist": [track["artists"][0]["name"] for track in top_tracks],
-    "Album": [track["album"]["name"] for track in top_tracks],
-    "Popularity":[track["album"]["popularity"] for track in top_tracks],
-    "Release Date": [track["album"]["release_date"] for track in top_tracks]
-}
 
-# get data into df
-df = pd.DataFrame(data)
-print(df)
 
-# df to excel
-file_name = "top_tracks.xlsx"
-df.to_excel(file_name, index=False)
-
-# Open excel file
-os.system(f"start {file_name}")
 
