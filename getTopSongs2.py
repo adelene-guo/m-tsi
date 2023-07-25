@@ -57,12 +57,23 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
                 # Fetch the user's top tracks
                 top_tracks = sp.current_user_top_tracks(limit=10, time_range='short_term')
+
                 data = {
                     "Track Name": [track["name"] for track in top_tracks["items"]],
                     "Artist": [", ".join([artist["name"] for artist in track["artists"]]) for track in
                                top_tracks["items"]],
                     "Album": [track["album"]["name"] for track in top_tracks["items"]],
-                    "Release Date": [track["album"]["release_date"] for track in top_tracks["items"]]
+                    "Release Date": [track["album"]["release_date"] for track in top_tracks["items"]],
+                    "id": [track["id"] for track in top_tracks['items']], #unique song id, just in case we need it
+                    "album_cover": [track["album"]["images"]["url"] for track in top_tracks["items"]], #for the GUI
+                    "duration_ms": sp.audio_features([track["id"] for track in top_tracks['items']])["duration_ms"], #duration in ms. when time runs up, next song plays
+                    "popularity": [track["popularity"] for track in top_tracks['items']], #range from 0-100. for ordering songs
+                    "danceability": sp.audio_features([track["id"] for track in top_tracks['items']])["danceability"],#range from 0-1. for ordering songs
+                    "energy": sp.audio_features([track["id"] for track in top_tracks['items']])["energy"], #0 to 1. for ordering songs
+                    "valence": sp.audio_features([track["id"] for track in top_tracks['items']])["valence"], #0 to 1. higher happier. lower sadder. for ordering songs.
+                    "key": sp.audio_features([track["id"] for track in top_tracks['items']])["key"], # 0 = C, 1 = C♯/D♭, 2 = D, and so on, -1 is NA. for mixing
+                    "tempo": sp.audio_features([track["id"] for track in top_tracks['items']])["tempo"], #avg bpm. for mixing
+                    "time_signature": sp.audio_features([track["id"] for track in top_tracks['items']])["time_signature"], #time signature. for mixing
                 }
 
                 # Convert to DataFrame
@@ -84,6 +95,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         # If it's neither root nor callback, serve files as usual
         else:
             super().do_GET()
+
 
 
 # Start the HTTP server
