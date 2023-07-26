@@ -1,25 +1,67 @@
+<!--
+Adie Guo
+M&TSI 2023
+7/26/23
+-->
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Top Tracks</title>
-</head>
-<body>
-    <h1>Your Top Tracks</h1>
-    <table>
-        <tr>
-            <th>Track Name</th>
-            <th>Artist</th>
-            <th>Album</th>
-            <th>Release Date</th>
-        </tr>
-        {% for index in range(num_tracks) %}
-        <tr>
-            <td>{{ TRACK_NAME[index] }}</td>
-            <td>{{ ARTIST[index] }}</td>
-            <td>{{ ALBUM[index] }}</td>
-            <td>{{ RELEASE_DATE[index] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
+<html lang="en-US">
+<title>verse</title>
+    <head>
+        <link rel="stylesheet" type="text/css" href="verse_user.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
+    </head>
+    <body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
+        <div style="margin-top: 3%"></div>
+        <center><img src="verse_title.png" width = "40%"></center>
+
+        <div style="margin-top: 3%"></div>
+        <b><span style="display: inline; color:#CC5500; font-size: 50px;" id="number"></span></b>
+        <p style="display: inline;"> contributers</p>
+
+        <div style="margin-top: 3%"></div>
+        <div style="float: left;">currently playing...</div>
+
+        <div style="float: right;" >
+            mixing
+            <label class="switch" id="mixingOn" onclick="mixingOn()">
+            <input type="checkbox">
+            <span class="slider round"></span></label>
+        </div>
+
+        <div style="margin-top: 15%"></div>
+        <center><img src="SongCoverExample.jpeg" alt="Song Cover" width = "40%"></center>
+
+        <div style="margin-top: 3%"></div>
+        <h1 style="text-align: center;" id = "songName"></h1> <!--code this part-->
+
+        <div id="queue-container">
+            <h2>Your Top Tracks</h2>
+            <table style="width: 100%; background-color: #252525; color: #CC5500; border-collapse: collapse; margin-bottom: 2%;">
+                <tr>
+                    <th style="border: 1px solid #CC5500; padding: 10px;">Track Name</th>
+                    <th style="border: 1px solid #CC5500; padding: 10px;">Artist</th>
+                    <th style="border: 1px solid #CC5500; padding: 10px;">Album</th>
+                    <th style="border: 1px solid #CC5500; padding: 10px;">Release Date</th>
+                </tr>
+                {% for index in range(num_tracks) %}
+                <tr>
+                    <td style="border: 1px solid #CC5500; padding: 10px;">{{ TRACK_NAME[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: 10px;">{{ ARTIST[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: 10px;">{{ ALBUM[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: 10px;">{{ RELEASE_DATE[index] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h2>Music Queue</h2>
+            <ul id="queue-list"></ul>
+            <input type="text" id="song-input" style ="color: #151414;" placeholder="Enter a song...">
+            <button style="color:#151414; width: 35%;" onclick="addToQueue()">Add Song</button>
+        </div>
+
+        <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">Leave Party</button></center>
+        <script src="verse_user.js"></script>
+    </body>
 </html>
