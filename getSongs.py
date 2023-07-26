@@ -17,6 +17,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import traceback
 from jinja2 import Template
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 # Get ID and secret from environment
@@ -34,6 +36,28 @@ scope = 'user-top-read'
 spotipy.Spotify(sp = 
     auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=REDIRECT_URI, scope=scope, cache_path=None))
 """
+
+
+def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
+    # Set up credentials
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\chase\Downloads\sixth-hawk-393504-f8baa14e8c72.json', scope)
+    client = gspread.authorize(creds)
+
+    # Open the specified spreadsheet
+    spreadsheet = client.open(spreadsheet_name)
+    worksheet = spreadsheet.get_worksheet(worksheet_index)
+
+    # Get total rows
+    num_rows = worksheet.row_count
+
+    # Delete rows from 2 to the end
+    if num_rows > 1:
+        worksheet.delete_rows(2, num_rows)
+
+    print(f"Cleared data from row 2 to end in '{spreadsheet_name}'!")
+
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -73,8 +97,12 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 print(f"Received code: {code}")
                 try:
                     # Get the access token using the code
-                    token_info = sp.auth_manager.get_cached_token()
-                    sp.token = token_info["access_token"]
+                    token_info = sp.auth_manager.get_access_token(code)
+                    if token_info:
+                        sp.token = token_info["access_token"]
+                    else:
+                        print("Failed to retrieve access token using code.")
+                        # handle the error, perhaps by redirecting the user to authenticate again
 
                     # Get the current authenticated user's username
                     current_user_info = sp.me()
@@ -151,6 +179,9 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 # Start the HTTP server
 with socketserver.TCPServer(("", 8000), MyHTTPRequestHandler) as httpd:
+    clear_data_from_row_2('userSongs')
+    clear_data_from_row_2('playlist')
     print(f"Server started at http://{YOUR_MACHINE_IP}:8000")
     link = "http://{YOUR_MACHINE_IP}:8000"
     httpd.serve_forever()
+
