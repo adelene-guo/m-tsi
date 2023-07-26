@@ -111,7 +111,21 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header('Content-type', 'text/html')
                     self.end_headers()
-                    self.wfile.write(b"Authentication successful! You can close this window.")
+                    self.wfile.write(b"Authentication successful! Redirecting")
+                    with open("index.html", "r") as file:
+                        html_template = file.read()
+
+                        # Replace placeholders with actual data from the DataFrame
+                        num_tracks = len(df)
+                        html_content = html_template.replace("{{ num_tracks }}", str(num_tracks))
+                        for col in df.columns:
+                            html_content = html_content.replace(f"{{ {col} }}", df[col].to_string(index=False))
+
+                        self.send_response(200)
+                        self.send_header('Content-type', 'text/html')
+                        self.end_headers()
+                        self.wfile.write(html_content.encode())
+                        return
                     return
 
                 except Exception as e:

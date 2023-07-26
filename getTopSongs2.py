@@ -83,7 +83,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
-                self.wfile.write(b"Authentication successful! You can close this window.")
+                self.wfile.write(verse_user.encode())
                 return
 
             else:

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Tracks</title>
+</head>
+<body>
+    <h1>Your Top Tracks</h1>
+    <table>
+        <tr>
+            <th>Track Name</th>
+            <th>Artist</th>
+            <th>Album</th>
+            <th>Release Date</th>
+        </tr>
+        {% for index in range(num_tracks) %}
+        <tr>
+            <td>{{ TRACK_NAME[index] }}</td>
+            <td>{{ ARTIST[index] }}</td>
+            <td>{{ ALBUM[index] }}</td>
+            <td>{{ RELEASE_DATE[index] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
