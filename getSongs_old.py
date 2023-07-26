@@ -1,5 +1,5 @@
 """
-Chase Leibowitz
+Chase Leibowitz and Adie
 M&TSI 2023
 7/21/23
 Get the user's top tracks from the Spotify API and save it as a dataframe
