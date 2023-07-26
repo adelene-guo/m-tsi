@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<title>verse</title>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="verse_user.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #151414; padding: 2%;">
+
+    <center><img src="verse_title.png" width="80%" style="max-width: 400px;"></center>
+
+    <div style="margin-top: 3%"></div>
+    <b><span style="display: inline; color:#CC5500; font-size: 24px;" id="number"></span></b>
+    <p style="display: inline;"> contributors</p>
+
+    <div style="margin-top: 3%"></div>
+    <div style="float: left;">currently playing...</div>
+
+    <div style="float: right;">
+        mixing
+        <label class="switch" id="mixingOn" onclick="mixingOn()">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <div style="margin-top: 5%;"></div>
+    <center><img src="SongCoverExample.jpeg" alt="Song Cover" width="80%" style="max-width: 400px;"></center>
+
+    <div style="margin-top: 3%"></div>
+    <h1 style="text-align: center; font-size: 24px;" id="songName"></h1> <!--code this part-->
+
+    <div id="queue-container">
+        <h2>Your Top Tracks</h2>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background-color: #252525; color: #CC5500; border-collapse: collapse; margin-bottom: 2%; border: none;">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: 30%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                </colgroup>
+                <tr>
+                    <th style="padding: 5px;">Track Name</th>
+                    <th style="padding: 5px;">Artist</th>
+                    <th style="padding: 5px;">Album</th>
+                    <th style="padding: 5px;">Release Date</th>
+                </tr>
+                {% for index in range(num_tracks) %}
+                <tr>
+                    <td style="padding: 5px;">{{ TRACK_NAME[index] }}</td>
+                    <td style="padding: 5px;">{{ ARTIST[index] }}</td>
+                    <td style="padding: 5px;">{{ ALBUM[index] }}</td>
+                    <td style="padding: 5px;">{{ RELEASE_DATE[index] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <h2>Music Queue</h2>
+        <ul id="queue-list"></ul>
+        <input type="text" id="song-input" style="color: #151414;" placeholder="Enter a song...">
+        <button style="color:#151414; width: 100%;" onclick="addToQueue()">Add Song</button>
+    </div>
+
+    <center><button style="color:#151414; width: 100%;" onclick="clearQueue()">Leave Party</button></center>
+    <script src="verse_user.js"></script>
+</body>
+
+</html>
