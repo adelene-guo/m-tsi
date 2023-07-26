@@ -4,6 +4,19 @@ M&TSI 2023
 7/21/23
 Get the user's top tracks from the Spotify API and save it as a dataframe
 """
+"""
+                    ,
+                    "id": [track["id"] for track in top_tracks['items']], #unique song id, just in case we need it
+                    "album_cover": [track["album"]["images"][0]["url"] for track in top_tracks["items"]], #for the GUI
+                    "duration_ms": sp.audio_features([track["id"] for track in top_tracks['items']])[21], #duration in ms. when time runs up, next song plays
+                    "popularity": [track["popularity"] for track in top_tracks['items']], #range from 0-100. for ordering songs
+                    "danceability": sp.audio_features([track["id"] for track in top_tracks['items']])[10],#range from 0-1. for ordering songs
+                    "energy": sp.audio_features([track["id"] for track in top_tracks['items']])[11], #0 to 1. for ordering songs
+                    "valence": sp.audio_features([track["id"] for track in top_tracks['items']])[19], #0 to 1. higher happier. lower sadder. for ordering songs.
+                    "key": sp.audio_features([track["id"] for track in top_tracks['items']])[12], # 0 = C, 1 = C♯/D♭, 2 = D, and so on, -1 is NA. for mixing
+                    "tempo": sp.audio_features([track["id"] for track in top_tracks['items']])[20], #avg bpm. for mixing
+                    "time_signature": sp.audio_features([track["id"] for track in top_tracks['items']])[22], #time signature. for mixing
+"""
 
 import os
 import pandas as pd
@@ -20,7 +33,7 @@ client_secret = "008c275d524146d68a9ec0cd04540dfc"
 
 # Replace with your machine's IP
 YOUR_MACHINE_IP = "10.251.158.107"  # e.g., "192.168.x.x"
-REDIRECT_URI = f"http://{YOUR_MACHINE_IP}:8000/callback"
+REDIRECT_URI = f"http://{YOUR_MACHINE_IP}:8888/callback"
 
 # Set scope for API -- scope is to get top songs
 scope = 'user-top-read'
@@ -64,17 +77,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     "Artist": [", ".join([artist["name"] for artist in track["artists"]]) for track in
                                top_tracks["items"]],
                     "Album": [track["album"]["name"] for track in top_tracks["items"]],
-                    "Release Date": [track["album"]["release_date"] for track in top_tracks["items"]],
-                    "id": [track["id"] for track in top_tracks['items']], #unique song id, just in case we need it
-                    "album_cover": [track["album"]["images"][0]["url"] for track in top_tracks["items"]], #for the GUI
-                    "duration_ms": sp.audio_features([track["id"] for track in top_tracks['items']])[21], #duration in ms. when time runs up, next song plays
-                    "popularity": [track["popularity"] for track in top_tracks['items']], #range from 0-100. for ordering songs
-                    "danceability": sp.audio_features([track["id"] for track in top_tracks['items']])[10],#range from 0-1. for ordering songs
-                    "energy": sp.audio_features([track["id"] for track in top_tracks['items']])[11], #0 to 1. for ordering songs
-                    "valence": sp.audio_features([track["id"] for track in top_tracks['items']])[19], #0 to 1. higher happier. lower sadder. for ordering songs.
-                    "key": sp.audio_features([track["id"] for track in top_tracks['items']])[12], # 0 = C, 1 = C♯/D♭, 2 = D, and so on, -1 is NA. for mixing
-                    "tempo": sp.audio_features([track["id"] for track in top_tracks['items']])[20], #avg bpm. for mixing
-                    "time_signature": sp.audio_features([track["id"] for track in top_tracks['items']])[22], #time signature. for mixing
+                    "Release Date": [track["album"]["release_date"] for track in top_tracks["items"]]
                 }
 
                 # Convert to DataFrame
@@ -138,6 +141,6 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 # Start the HTTP server
-with socketserver.TCPServer(("", 8000), MyHTTPRequestHandler) as httpd:
-    print(f"Server started at http://{YOUR_MACHINE_IP}:8000")
+with socketserver.TCPServer(("", 8888), MyHTTPRequestHandler) as httpd:
+    print(f"Server started at http://{YOUR_MACHINE_IP}:8888")
     httpd.serve_forever()
