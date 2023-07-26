@@ -35,14 +35,14 @@
     <h1 style="text-align: center; font-size: 24px;" id="songName"></h1> <!--code this part-->
 
     <div id="queue-container">
-        <h2>Your Top Tracks</h2>
+        <h2>Your Queue</h2>
         <div style="overflow-x: auto;">
             <table style="width: 100%; background-color: #252525; color: #CC5500; border-collapse: collapse; margin-bottom: 2%; border: none;">
                 <colgroup>
-                    <col style="width: 30%;">
-                    <col style="width: 30%;">
-                    <col style="width: 20%;">
-                    <col style="width: 20%;">
+                    <col style="width: 5%;">
+                    <col style="width: 5%;">
+                    <col style="width: 5%;">
+                    <col style="width: 5%;">
                 </colgroup>
                 <tr>
                     <th style="padding: 5px;">Track Name</th>
@@ -60,8 +60,6 @@
                 {% endfor %}
             </table>
         </div>
-
-        <h2>Music Queue</h2>
         <ul id="queue-list"></ul>
         <input type="text" id="song-input" style="color: #151414;" placeholder="Enter a song...">
         <button style="color:#151414; width: 100%;" onclick="addToQueue()">Add Song</button>

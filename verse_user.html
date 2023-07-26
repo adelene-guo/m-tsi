@@ -1,46 +1,136 @@
+<!--
+Adie Guo
+M&TSI 2023
+7/26/23
+-->
+
+<!DOCTYPE html>
+<html lang="en-US">
+<title>verse</title>
+<head>
+    <link rel="stylesheet" type="text/css" href="verse_user.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
+    <div style="margin-top: 3%"></div>
+    
+    <center><img src="verse_title.png" width="40%"></center>
+
+    <div style="margin-top: 3%"></div>
+    <b><span style="display: inline; color:#CC5500; font-size: 50px;" id="number"></span></b>
+    <p style="display: inline;"> contributors</p>
+
+    <div style="margin-top: 3%"></div>
+    <div style="float: left;">currently playing...</div>
+
+    <div style="float: right;">
+        mixing
+        <label class="switch" id="mixingOn" onclick="mixingOn()">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <div style="margin-top: 15%"></div>
+    <center><img src="SongCoverExample.jpeg" alt="Song Cover" width="40%"></center>
+
+    <div style="margin-top: 3%"></div>
+    <h1 style="text-align: center;" id="songName"></h1> <!--code this part-->
+
+    <div id="queue-container">
+        <h2>Music Queue</h2>
+        <div style="width: 100%; overflow-x: auto;">
+            <table style="background-color: #151414; color: #CC5500; width: 100%; margin-bottom: 2%;">
+                {% for index in range(num_tracks) %}
+                <tr style="width: 100%;">
+                    <td style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #CC5500;">{{ TRACK_NAME[index] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <h3>Added Songs</h3>
+        <ul id="queue-list"></ul>
+        <center><input type="text" id="song-input" style="color: #151414; width:32.5%;" placeholder="Song Name">
+            <input type="text" id="artist-input" style="color: #151414; width: 32.5%;" placeholder="Artist Name">
+        <button style="color:#151414; width: 35%; " onclick="addToQueue()">Add Song</button></center>
+    </div>
+
+    <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">Leave Party</button></center>
+    <script src="verse_user.js"></script>
+</body>
+
+</html>
+
+<!---
+OLD VERSION by Adie Guo
+
 <!DOCTYPE html>
 <html lang="en-US">
 <title>verse</title>
     <head>
         <link rel="stylesheet" type="text/css" href="verse_user.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com"> 
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
     </head>
     <body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
         <div style="margin-top: 3%"></div>
         <center><img src="verse_title.png" width = "40%"></center>
-        
+
         <div style="margin-top: 3%"></div>
         <b><span style="display: inline; color:#CC5500; font-size: 50px;" id="number"></span></b>
         <p style="display: inline;"> contributers</p>
-        
+
         <div style="margin-top: 3%"></div>
         <div style="float: left;">currently playing...</div>
-        
+
         <div style="float: right;" >
             mixing
             <label class="switch" id="mixingOn" onclick="mixingOn()">
             <input type="checkbox">
             <span class="slider round"></span></label>
-            </div>
-        </label>
-        
+        </div>
+
         <div style="margin-top: 15%"></div>
         <center><img src="SongCoverExample.jpeg" alt="Song Cover" width = "40%"></center>
-        
+
         <div style="margin-top: 3%"></div>
-        <h1 style="text-align: center;" id = "songName"></h1> <!--code this part-->
+        <h1 style="text-align: center;" id = "songName"></h1> 
 
-    <div id="queue-container">
-        <h2>music queue</h2>
-        <ul id="queue-list"></ul>
-        <input type="text" id="song-input" style ="color: #151414;" placeholder="Enter a song...">
-        <button style="color:#151414; width: 35%;" onclick="addToQueue()">add song</button>
-    </div>
-    <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">leave party</button></center>
+        <div id="queue-container">
+            <h2>Your Top Tracks</h2>
+            <table style="width: 100%; background-color: #151414; color: #CC5500; border-collapse: collapse; margin-bottom: 2%;">
+                <tr>
+                    <th style="border: 1px solid #CC5500; padding: none;">Track Name</th>
+                    <th style="border: 1px solid #CC5500; padding: none;">Artist</th>
+                    <th style="border: 1px solid #CC5500; padding: none;">Album</th>
+                    <th style="border: 1px solid #CC5500; padding: none;">Release Date</th>
+                </tr>
+                {% for index in range(num_tracks) %}
+                <tr>
+                    <td style="border: 1px solid #CC5500; padding: none;">{{ TRACK_NAME[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: none;">{{ ARTIST[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: none;">{{ ALBUM[index] }}</td>
+                    <td style="border: 1px solid #CC5500; padding: 10px;">{{ RELEASE_DATE[index] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
 
+            <h2>Music Queue</h2>
+            <ul id="queue-list"></ul>
+            <input type="text" id="song-input" style ="color: #151414;" placeholder="Enter a song...">
+            <button style="color:#151414; width: 35%;" onclick="addToQueue()">Add Song</button>
+        </div>
+
+        <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">Leave Party</button></center>
         <script src="verse_user.js"></script>
-    
     </body>
 </html>
+-->

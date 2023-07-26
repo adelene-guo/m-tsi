@@ -1,65 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
+<title>verse</title>
 <head>
-    <title>Happy & Danceable Songs</title>
+    <link rel="stylesheet" type="text/css" href="verse_user.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>Happy & Danceable Songs</h1>
-    <div id="songs-container"></div>
 
-    <script>
-        // Your Spotify API authentication token
-        const accessToken = 'YOUR_ACCESS_TOKEN';
+<body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
+    <div style="margin-top: 3%"></div>
+    <center><img src="verse_title.png" width="40%"></center>
 
-        // Function to fetch songs based on mood and danceability
-        async function fetchSongs() {
-            const mood = 'happy'; // You can customize the mood criteria
-            const danceability = 0.7; // You can customize the danceability criteria
+    <div style="margin-top: 3%"></div>
+    <b><span style="display: inline; color:#CC5500; font-size: 50px;" id="number"></span></b>
+    <p style="display: inline;"> contributors</p>
 
-            try {
-                const response = await fetch(`https://api.spotify.com/v1/search?q=mood:${mood}%20danceability:>${danceability}&type=track`, {
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken,
-                    },
-                });
+    <div style="margin-top: 3%"></div>
+    <div style="float: left;">currently playing...</div>
 
-                const data = await response.json();
-                const songs = data.tracks.items;
+    <div style="float: right;">
+        mixing
+        <label class="switch" id="mixingOn" onclick="mixingOn()">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
 
-                // Sort and filter songs based on mood and danceability
-                const sortedSongs = songs
-                    .filter(song => !isSadSong(song)) // Implement isSadSong() function to check if a song is sad
-                    .sort((a, b) => {
-                        // Implement your sorting logic based on mood and danceability here
-                    });
+    <div style="margin-top: 15%"></div>
+    <center><img src="SongCoverExample.jpeg" alt="Song Cover" width="40%"></center>
 
-                displaySongs(sortedSongs);
-            } catch (error) {
-                console.error('Error fetching songs:', error);
-            }
-        }
+    <div style="margin-top: 3%"></div>
+    <h1 style="text-align: center;" id="songName"></h1> <!--code this part-->
 
-        // Function to check if a song is sad based on characteristics
-        function isSadSong(song) {
-            // Implement your logic to determine if a song is sad
-            // You can use features like valence, energy, etc. from the API response
-            return false;
-        }
+    <div id="queue-container">
+        <h2>Music Queue</h2>
+        <div style="width: 100%; overflow-x: auto;">
+            <table style="background-color: #151414; color: #CC5500; width: 100%; margin-bottom: 2%;">
+                {% for index in range(num_tracks) %}
+                <tr style="width: 100%;">
+                    <td style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #CC5500;">{{ TRACK_NAME[index] }}</td>
+                    <td><button style="color:#151414; float: right;" onclick="removeTrack(index);" style="color:#151414;">Remove</button></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <h3>Added Songs</h3>
+        <ul id="queue-list"></ul>
+        <center><input type="text" id="song-input" style="color: #151414; " placeholder="Song Name">
+            <input type="text" id="artist-input" style="color: #151414; " placeholder="Artist Name">
+        <button style="color:#151414; width: 35%; " onclick="addToQueue()">Add Song</button></center>
+    </div>
 
-        // Function to display the sorted songs on the web page
-        function displaySongs(songs) {
-            const songsContainer = document.getElementById('songs-container');
-
-            songsContainer.innerHTML = '';
-            songs.forEach(song => {
-                const songElement = document.createElement('div');
-                songElement.textContent = song.name;
-                songsContainer.appendChild(songElement);
-            });
-        }
-
-        // Call the function to fetch and display songs
-        fetchSongs();
-    </script>
+    <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">Leave Party</button></center>
+    <script src="verse_user.js"></script>
 </body>
+
 </html>
