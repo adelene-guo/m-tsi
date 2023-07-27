@@ -19,6 +19,8 @@ import traceback
 from jinja2 import Template
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from flask import Flask, render_template
+app = Flask(__name__)
 
 
 # Get ID and secret from environment
@@ -39,6 +41,7 @@ spotipy.Spotify(sp =
 
 
 def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
+
     # Set up credentials
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
@@ -57,6 +60,24 @@ def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
         worksheet.delete_rows(2, num_rows)
 
     print(f"Cleared data from row 2 to end in '{spreadsheet_name}'!")
+
+@app.route('/')
+def index():
+  return render_template('template.html')
+
+@app.route('/get_album_cover/')
+def get_album_cover(playlist_name, song_name, sp_client):
+  current_track = spotipy.current_playback()
+  # Extract relevant information from the response
+  if current_track:
+        album_cover = current_track['item']['album']['images'][0]["url"]
+        return album_cover
+  else:
+        return "No track is currently playing."
+            
+if __name__ == '__main__':
+  app.run(debug=True)
+
 
 def add_song_to_playlist_by_name(playlist_name, song_name, sp_client):
     """Add a song to a specified playlist by its name."""
