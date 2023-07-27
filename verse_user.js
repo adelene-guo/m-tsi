@@ -44,6 +44,36 @@ function mixingOn(){
            inputField1.value = "";
            renderQueue();
        }
+    function addSongToPlaylist() {
+        const inputField = document.getElementById("song-input");
+        const songName = inputField.value.trim();
+    
+        if (songName !== "") {
+            const data = {
+                song_name: songName
+            };
+    
+            fetch('/add_song', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`Added ${songName} to playlist!`);
+                    inputField.value = "";
+                } else {
+                    console.error('Error adding song:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error adding song:', error);
+            });
+        }
+    }
        /*add song to spreadsheet
 
     try:

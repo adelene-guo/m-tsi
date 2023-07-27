@@ -34,10 +34,12 @@ REDIRECT_URI = f"http://{YOUR_MACHINE_IP}:8000/callback"
 # Set scope for API -- scope is to get top songs
 scope = 'user-top-read'
 
-"""# Create a spotipy client
-spotipy.Spotify(sp = 
-    auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=REDIRECT_URI, scope=scope, cache_path=None))
-"""
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+                                               client_secret=client_secret,
+                                               redirect_uri=REDIRECT_URI,
+                                               scope=scope))
+
 
 
 def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
@@ -61,12 +63,7 @@ def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
 
     print(f"Cleared data from row 2 to end in '{spreadsheet_name}'!")
 
-@app.route('/')
-def index():
-  return render_template('template.html')
-
-@app.route('/get_album_cover/')
-def get_album_cover(playlist_name, song_name, sp_client):
+def get_album_cover():
   current_track = spotipy.current_playback()
   # Extract relevant information from the response
   if current_track:
@@ -74,13 +71,10 @@ def get_album_cover(playlist_name, song_name, sp_client):
         return album_cover
   else:
         return "No track is currently playing."
-            
-if __name__ == '__main__':
-  app.run(debug=True)
 
-
-def add_song_to_playlist_by_name(playlist_name, song_name, sp_client):
+def add_song_to_playlist_by_name(song_name, sp_client):
     """Add a song to a specified playlist by its name."""
+    playlist_name = "Verse"
     # Search for the playlist by name to get the playlist_id
     playlists = sp_client.current_user_playlists()
     playlist_id = None
@@ -107,6 +101,19 @@ def add_song_to_playlist_by_name(playlist_name, song_name, sp_client):
     sp_client.playlist_add_items(playlist_id, [song_uri])
     print(f"Added {song_name} to {playlist_name}!")
 
+@app.route('/add_song', methods=['POST'])
+def add_song():
+    try:
+        data = request.get_json()
+        song_name = data['song_name']
+        add_song_to_playlist_by_name(song_name, sp)
+        return jsonify({'success': True})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+if __name__ == '__main__':
+    app.run()
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):

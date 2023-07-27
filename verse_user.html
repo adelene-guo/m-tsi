@@ -59,11 +59,53 @@ M&TSI 2023
         <ul id="queue-list"></ul>
         <center><input type="text" id="song-input" style="color: #151414; width:32.5%;" placeholder="Song Name">
             <input type="text" id="artist-input" style="color: #151414; width: 32.5%;" placeholder="Artist Name">
-        <button style="color:#151414; width: 35%; " onclick="addToQueue()">Add Song</button></center>
+        <button style="color:#151414; width: 35%; " onclick="addToQueue(); addSongToPlaylist();">Add Song</button></center>
     </div>
 
     <center><button style="color:#151414; width: 35%;" onclick="clearQueue()">Leave Party</button></center>
     <script src="verse_user.js"></script>
+    <script>
+        // ...Your existing JavaScript code...
+    
+        function addToQueue() {
+            const inputField = document.getElementById("song-input");
+            const inputField1 = document.getElementById("artist-input");
+            const songName = inputField.value.trim();
+            const artistName = inputField1.value.trim();
+    
+            if (songName !== "" && artistName !== "") {
+                // Send the data to the Python function via the server
+                fetch('/add_to_queue', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        song_name: songName,
+                        song_artist: artistName
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // If the server successfully processed the request, clear the input fields and render the queue
+                        inputField.value = "";
+                        inputField1.value = "";
+                        renderQueue();
+                    } else {
+                        console.error('Error adding song to the queue:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error calling Python function:', error);
+                });
+            } else {
+                console.error('Please enter both the song name and artist name.');
+            }
+        }
+    
+        // ...Your existing JavaScript code...
+    </script>
 </body>
 
 </html>
