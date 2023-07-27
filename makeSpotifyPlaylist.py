@@ -1,5 +1,7 @@
 """
 Chase and Adie
+Verse
+M&TSI 2023
 7/26/2023
 """
 import pandas as pd
@@ -9,6 +11,37 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import os
+from flask import Flask, render_template, request
+
+
+def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
+    # Set up credentials
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name(
+        r'C:\Users\chase\Downloads\sixth-hawk-393504-f8baa14e8c72.json', scope)
+    client = gspread.authorize(creds)
+
+    # Open the specified spreadsheet
+    spreadsheet = client.open(spreadsheet_name)
+    worksheet = spreadsheet.get_worksheet(worksheet_index)
+
+    # Get total rows
+    num_rows = worksheet.row_count
+
+    # Delete rows from 2 to the end
+    if num_rows > 1:
+        worksheet.delete_rows(2, num_rows)
+
+    worksheet.add_rows(1000)
+
+    print(f"Cleared data from row 2 to end in '{spreadsheet_name}'!")
+
+
+clear_data_from_row_2('playlist')
+
+with open("genAIPlaylist.py") as f:
+    exec(f.read())
 
 # Assuming your dataframe is df and the column with song names is named "song_names"
 # df = pd.read_csv('your_file.csv')  # Uncomment this if you're reading from a CSV
@@ -16,7 +49,8 @@ import os
 # Set up credentials
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\chase\Downloads\sixth-hawk-393504-f8baa14e8c72.json', scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(
+    r'C:\Users\chase\Downloads\sixth-hawk-393504-f8baa14e8c72.json', scope)
 client = gspread.authorize(creds)
 
 # open spreadsheet
@@ -30,7 +64,6 @@ len_data = len(existing_data)
 
 # download data from spreadsheet and save as df
 df = get_as_dataframe(worksheet, evaluate_formulas=True, skiprows=0)
-
 
 # delete all of the empty rows and columns that get imported
 df = df.dropna(how='all')
@@ -55,11 +88,11 @@ user_id = sp.current_user()['id']
 # overwrite existing playlists with same name
 playlists = sp.user_playlists(user_id)
 for playlist in playlists['items']:
-    if playlist['name'] == "Verse":
+    if playlist['name'] == "Verse2":
         sp.user_playlist_unfollow(user_id, playlist['id'])
 
 # Create a new playlist
-playlist = sp.user_playlist_create(user_id, "Verse", public=True)
+playlist = sp.user_playlist_create(user_id, "Verse2", public=True)
 playlist_id = playlist['id']
 
 # Add songs to the playlist
@@ -126,13 +159,12 @@ print(f"Playlist created: {playlist['external_urls']['spotify']}")
 
 print(f"Playlist created: {playlist['external_urls']['spotify']}")
 
-
-# Assuming your dataframe is named 'df'
+'''# Assuming your dataframe is named 'df'
 file_name = "output.xlsx"
 with pd.ExcelWriter(file_name, engine='xlsxwriter') as writer:
     track_df.to_excel(writer, sheet_name='Sheet1', index=False)
 
 # Open the file
-os.system(f'start excel "{file_name}"')  # for Windows
-
+os.system(f'start excel "{file_name}"')  # for Windows'''
+# return "worked"
 

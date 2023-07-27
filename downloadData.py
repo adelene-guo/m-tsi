@@ -19,7 +19,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\chase\Downlo
 client = gspread.authorize(creds)
 
 # open spreadsheet
-spreadsheet = client.open('test')
+spreadsheet = client.open('userSongs')
 
 # figure out where to start working -- index of where to start working in the spreadsheet -- add somethign later to start after other stuff
 worksheet = spreadsheet.get_worksheet(0)

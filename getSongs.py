@@ -112,8 +112,7 @@ def add_song():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
-if __name__ == '__main__':
-    app.run()
+
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -142,7 +141,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                                                            redirect_uri=REDIRECT_URI,
                                                            scope=scope,
                                                            cache_path=cache_file))
-            add_song_to_playlist_by_name('Verse', 'All of the lights', sp)
+            #add_song_to_playlist_by_name('Verse', 'All of the lights', sp)
 
             # Extract the code from the callback URL
             query_components = parse_qs(urlparse(self.path).query)
@@ -233,12 +232,15 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+if __name__ == '__main__':
+    # Start the HTTP server
+    with socketserver.TCPServer(("", 8000), MyHTTPRequestHandler) as httpd:
+        clear_data_from_row_2('userSongs')
+        clear_data_from_row_2('playlist')
+        print(f"Server started at http://{YOUR_MACHINE_IP}:8000")
+        print("http running")
+        link = "http://{YOUR_MACHINE_IP}:8000"
+        httpd.serve_forever()
+    #app.run()
 
-# Start the HTTP server
-with socketserver.TCPServer(("", 8000), MyHTTPRequestHandler) as httpd:
-    clear_data_from_row_2('userSongs')
-    clear_data_from_row_2('playlist')
-    print(f"Server started at http://{YOUR_MACHINE_IP}:8000")
-    link = "http://{YOUR_MACHINE_IP}:8000"
-    httpd.serve_forever()
 
