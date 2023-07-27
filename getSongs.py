@@ -58,6 +58,34 @@ def clear_data_from_row_2(spreadsheet_name, worksheet_index=0):
 
     print(f"Cleared data from row 2 to end in '{spreadsheet_name}'!")
 
+def add_song_to_playlist_by_name(playlist_name, song_name, sp_client):
+    """Add a song to a specified playlist by its name."""
+    # Search for the playlist by name to get the playlist_id
+    playlists = sp_client.current_user_playlists()
+    playlist_id = None
+    for playlist in playlists['items']:
+        if playlist['name'] == playlist_name:
+            playlist_id = playlist['id']
+            break
+
+    if not playlist_id:
+        print(f"Could not find playlist named {playlist_name}")
+        return
+
+    # Search for the song by name to get the song_uri
+    song_results = sp_client.search(q=song_name, type='track', limit=1)
+    song_items = song_results['tracks']['items']
+
+    if not song_items:
+        print(f"Could not find song named {song_name}")
+        return
+
+    song_uri = song_items[0]['uri']
+
+    # Add the song to the playlist
+    sp_client.playlist_add_items(playlist_id, [song_uri])
+    print(f"Added {song_name} to {playlist_name}!")
+
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -86,6 +114,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                                                            redirect_uri=REDIRECT_URI,
                                                            scope=scope,
                                                            cache_path=cache_file))
+            add_song_to_playlist_by_name('Verse', 'All of the lights', sp)
 
             # Extract the code from the callback URL
             query_components = parse_qs(urlparse(self.path).query)
