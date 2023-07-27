@@ -1,6 +1,5 @@
-var number = 0;
-var currentSong = 0;
-number++; // how to make the variable universal cross all accounts?
+var number = 5;
+var currentSong = 0; // how to make the variable universal cross all accounts?
 
 const songnames = [
     "Miss the Rage (feat. PlayBoi Carti)",
@@ -30,20 +29,7 @@ function mixingOn(){
     }
    }
 
-   let queue = [];
-
-   function addToQueue() {
-       const inputField = document.getElementById("song-input");
-       const inputField1 = document.getElementById("artist-input");
-       const songName = inputField.value.trim();
-       const artistName = inputField1.value.trim();
-
-       if (songName !== "" && artistName !== "") {
-           queue.push(songName +" by "+artistName);
-           inputField.value = "";
-           inputField1.value = "";
-           renderQueue();
-       }
+/*
     function addSongToPlaylist() {
         const inputField = document.getElementById("song-input");
         const songName = inputField.value.trim();
@@ -74,6 +60,7 @@ function mixingOn(){
             });
         }
     }
+    *\
        /*add song to spreadsheet
 
     try:
@@ -113,28 +100,44 @@ function mixingOn(){
         print(f"Error searching for {song}. Error: {e}")
 */
        
-   }
 
-   function removeFromQueue(index) {
-       queue.splice(index, 1);
-       renderQueue();
-   }
+let queue = [];
 
-   function renderQueue() {
-       const queueList = document.getElementById("queue-list");
-       queueList.innerHTML = "";
+// Function to add a song to the queue
+function addSong() {
+    const songInput = document.getElementById('song-input');
+    const artistInput = document.getElementById('artist-input');
+    const songName = songInput.value.trim();
+    const artistName = artistInput.value.trim();
 
-       queue.forEach((song, index) => {
-           const listItem = document.createElement("li");
-           listItem.className = "queue-item";
-           listItem.innerHTML = `
-               <span>${song}</span>
-               <button style="color:black;" onclick="removeFromQueue(${index})">Remove</button>
-           `;
-           queueList.appendChild(listItem);
-       });
-   }
-   function clearQueue() {
-    queue = [];
+    if (songName !== '') {
+        queue.push(songName+" by "+artistName+"  ");
+        songInput.value = '';
+        artistInput.value = '';
+        renderQueue();
+    }
+}
+
+// Function to remove a song from the queue
+function removeSong(index) {
+    queue.splice(index, 1);
     renderQueue();
+}
+
+// Function to render the song queue
+function renderQueue() {
+    const songQueue = document.getElementById('queue-list');
+    songQueue.innerHTML = '';
+
+    queue.forEach((song, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = song;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => removeSong(index);
+
+        listItem.appendChild(removeButton);
+        songQueue.appendChild(listItem);
+    });
 }

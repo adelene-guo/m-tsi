@@ -12,6 +12,7 @@ M&TSI 2023
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
+    
 </head>
 
 <body style="background-color: #151414; margin-left: 7%; margin-right: 7%; margin-top: 7%; margin-bottom: 7%;">
@@ -41,7 +42,7 @@ M&TSI 2023
     <h1 style="text-align: center;" id="songName"></h1> <!--code this part-->
 
     <div id="queue-container">
-        <h2>Music Queue</h2>
+        <h2>your top songs</h2>
         <div style="width: 100%; overflow-x: auto;">
             <table style="background-color: #151414; color: #CC5500; width: 100%; margin-bottom: 2%;">
                 {% for index in range(num_tracks) %}
@@ -54,6 +55,12 @@ M&TSI 2023
                 </tr>
                 {% endfor %}
             </table>
+            <h2>added songs</h2>
+            <ul id="queue-list"></ul>
+            <input type="text" id="song-input" style ="color: #151414;width:32.5%" placeholder="song name">
+            <input type="text" id="artist-input" style ="color: #151414;width:32.5%" placeholder="artist">
+            <button style="color:#151414; width: 14%;" onclick="addSong()">add</button>
+      
         </div>
     </div>
     <script src="verse_user.js"></script>
