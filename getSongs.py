@@ -18,7 +18,6 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import traceback
 from jinja2 import Template
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from flask import Flask, render_template
 app = Flask(__name__)
 
@@ -197,7 +196,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header('Content-type', 'text/html')
                     self.end_headers()
-                    with open("verse_user.html", "r") as file:
+                    with open("verse_user1.html", "r") as file:
                         template = Template(file.read())
                         rendered_html = template.render(
                             num_tracks=len(df),
