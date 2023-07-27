@@ -18,7 +18,6 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import traceback
 from jinja2 import Template
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from flask import Flask, render_template
 app = Flask(__name__)
 
