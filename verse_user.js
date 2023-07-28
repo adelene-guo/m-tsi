@@ -124,6 +124,11 @@ function removeSong(index) {
     renderQueue();
 }
 
+function clearQueue(){
+    queue = [];
+    renderQueue();
+}
+
 // Function to render the song queue
 function renderQueue() {
     const songQueue = document.getElementById('queue-list');
@@ -135,6 +140,7 @@ function renderQueue() {
 
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove';
+        removeButton.style.color = "black";
         removeButton.onclick = () => removeSong(index);
 
         listItem.appendChild(removeButton);
